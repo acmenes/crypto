@@ -40,6 +40,7 @@ def initialize_portfolio():
     # new_portfolio = Portfolios.create_portfolio()
     # db.session.add(new_portfolio)
     # db.session.commit()
+
     print("New portfolio created")
 
 
@@ -53,9 +54,10 @@ def hour_check(sc):
         # While checking prices, check if we already have one of those coins in our portfolio
         # coin_by_id = Purchases.query.get(coin_id)
         # if(coin_by_id):
-        #     average_price(coin_id)
+        #   coin_by_id.current_price = average_price(coin_id)
+        #   coin_by_id.gain_loss = coin_by_id.price_purchased - current_price
+
         # replace the current_price field with the result of the average price function
-        # calculate the difference between current price and average price and replace the gain_loss field with the result
 
         x = 0
         top3_names = []

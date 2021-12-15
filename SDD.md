@@ -43,7 +43,7 @@ psql < crypto.sql
 - Python
 - PSQL
 - SQLAlchemy (ORM for interfacing between PostgreSQL and Python)
-- Crypto API
+- CoinGecko Crypto API
 - DBDiagram.io (to design db schema)
 
 ## Issues to solve
