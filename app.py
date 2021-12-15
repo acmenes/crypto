@@ -50,6 +50,13 @@ def hour_check(sc):
         check = ca.get_coins()
         top3 = [check[0], check[1], check[2]]
 
+        # While checking prices, check if we already have one of those coins in our portfolio
+        # coin_by_id = Purchases.query.get(coin_id)
+        # if(coin_by_id):
+        #     average_price(coin_id)
+        # replace the current_price field with the result of the average price function
+        # calculate the difference between current price and average price and replace the gain_loss field with the result
+
         x = 0
         top3_names = []
 
@@ -124,13 +131,6 @@ def submit_order(coin_id: str, qty: int, bid: float):
 
         current_date = datetime.date(datetime.now())
         current_time = datetime.time(datetime.now())
-
-        # While submitting an order, check if we already have one of those coins in our portfolio
-        # coin_by_id = Purchases.query.get(coin_id)
-        # if(coin_by_id):
-        #     average_price(coin_id)
-        # replace the current_price field with the result of the average price function
-        # calculate the difference between current price and average price and replace the gain_loss field with the result
 
         print(
             f"Submitting order of {coin_id} for {qty} coin at a price of {bid}.")
