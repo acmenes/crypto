@@ -50,4 +50,4 @@ psql < crypto.sql
 
 - When connecting to the provided database using the SQL Pro GUI, this error occurs: MySQL said: Protocol mismatch; server version = 11, client version = 10
 - When attempting to connect to my own PostgreSQL database instead using SQLAlchemy, this error occurs: Is the server running locally and accepting connections on Unix domain socket "/var/run/postgresql/.s.PGSQL.5432"?
-- Calculating gain/loss- I created a column for gain/loss in the db. I wasn't able to implement this feature but I am able to speak to how I would go about implementing it. 
+- Calculating gain/loss- I created a column for gain/loss in the db. I know how I want to implement this feature (checking the current price of a coin against the price purchased and calculating the difference), but I am feeling blocked by my database issues at the moment.
