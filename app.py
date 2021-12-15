@@ -55,7 +55,12 @@ def hour_check(sc):
         # coin_by_id = Purchases.query.get(coin_id)
         # if(coin_by_id):
         #   coin_by_id.current_price = average_price(coin_id)
-        #   coin_by_id.gain_loss = coin_by_id.price_purchased - current_price
+        #   coin_by_id.gain_loss = ((coin_by_id.price_purchased - current_price) /
+        #   ((coin_by_id.price_purchased + current_price) / 2)) * 100
+
+        # to get percent diff:
+
+        # ((value1 - value2) / ((value1 + value2) / 2)) * 100
 
         # replace the current_price field with the result of the average price function
 
