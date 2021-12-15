@@ -11,8 +11,6 @@ import psycopg2
 
 from dotenv import find_dotenv, load_dotenv, dotenv_values
 
-GLOBAL_CHECK_TIME = datetime.time(datetime.now())
-
 # connect_db(app)
 
 # This will allow us to log the results of trades.
@@ -61,6 +59,8 @@ def hour_check(sc):
         # to get percent diff:
 
         # ((value1 - value2) / ((value1 + value2) / 2)) * 100
+        # if value 1 is larger it should be displayed positively, if value 2 is larger it should be
+        # displayed as a negative
 
         # replace the current_price field with the result of the average price function
 
@@ -90,8 +90,7 @@ def hour_check(sc):
         s.enter(3600, 100, hour_check, (sc,))
 
     except:
-        print(
-            f"An error occurred in the hour check function at {GLOBAL_CHECK_TIME}.")
+        print("An error occurred in the hour check function.")
 
 
 def average_price(coin_id: str):
@@ -125,8 +124,7 @@ def average_price(coin_id: str):
         return average_price
 
     except:
-        print(
-            f"An error occured in the average function at {GLOBAL_CHECK_TIME}.")
+        print("An error occured in the average function at.")
 
 
 def submit_order(coin_id: str, qty: int, bid: float):
@@ -151,8 +149,7 @@ def submit_order(coin_id: str, qty: int, bid: float):
             f"{qty} of {coin_id} fulfilled at {current_time} on {current_date} at a price of {bid}.")
 
     except:
-        print(
-            f"An error occurred in the submit function at {GLOBAL_CHECK_TIME}.")
+        print("An error occurred in the submit function.")
 
 
 # Message for when a user loads the app.
