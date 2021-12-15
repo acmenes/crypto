@@ -5,7 +5,7 @@ import sqlalchemy as db
 from sqlalchemy.sql.expression import table
 from sqlalchemy.util.langhelpers import symbol
 
-engine = db.create_engine('postgresql:///crypto_db')
+engine = db.create_engine('postgresql:///crypto')
 connection = engine.connect()
 metadata = db.MetaData()
 purchases = db.Table('purchases', metadata)

@@ -1,9 +1,9 @@
 \echo 'Delete and recreate crypto db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
-DROP DATABASE crypto_db;
-CREATE DATABASE crypto_db;
-\connect crypto_db
+DROP DATABASE crypto;
+CREATE DATABASE crypto;
+\connect crypto
 
 CREATE TABLE portfolios (
     id SERIAL PRIMARY KEY 
@@ -27,3 +27,5 @@ CREATE TABLE purchases (
     current_price FLOAT NOT NULL, 
     gain_loss FLOAT 
 );
+
+
