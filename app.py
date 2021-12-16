@@ -70,6 +70,7 @@ def hour_check(sc):
         current_date = datetime.date(datetime.now())
         current_time = datetime.time(datetime.now())
 
+        print("****************")
         print(
             f"Here are the top 3 cryptos on {current_date} at {current_time}.")
 
@@ -83,7 +84,6 @@ def hour_check(sc):
             # db.session.add(check)
             # db.session.commit()
             if float(average_price(f"{top3_names[x]}")) > float(top3[x].get("current_price")):
-                # ca.submit_order(top3_names[x], 1, top3[x].get("current_price"))
                 submit_order({top3_names[x]}, 1, top3[x].get("current_price"))
             x += 1
 

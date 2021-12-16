@@ -35,8 +35,11 @@ poetry install
 
 ## Starting up the databases
 
-In your terminal:
-psql < crypto.sql
+docker exec -it db bash
+mysql -u root -p
+enter the password
+\r crypto
+
 
 ## Tech stack
 

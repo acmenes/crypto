@@ -10,18 +10,18 @@ CREATE TABLE portfolios (
 );
 
 CREATE TABLE top_cryptos (
-    symbol VARCHAR,
-    name VARCHAR NOT NULL PRIMARY KEY NOT NULL,
+    symbol VARCHAR(3),
+    crypto_name VARCHAR(20) PRIMARY KEY,
     current_price FLOAT NOT NULL,
-    date VARCHAR NOT NULL,
-    time VARCHAR NOT NULL
+    date VARCHAR(20) NOT NULL,
+    time VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE purchases (
     portfolio_id INTEGER REFERENCES portfolios,
     id SERIAL PRIMARY KEY,
-    coin_id VARCHAR NOT NULL REFERENCES top_cryptos,
-    symbol VARCHAR, 
+    coin_id VARCHAR(20) NOT NULL REFERENCES top_cryptos,
+    symbol VARCHAR(3), 
     qty FLOAT NOT NULL,
     price_at_purchase FLOAT NOT NULL,
     current_price FLOAT NOT NULL, 

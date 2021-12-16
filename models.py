@@ -2,10 +2,13 @@
 
 from os import curdir
 import sqlalchemy as db
+from sqlalchemy import Integer, Column, create_engine, ForeignKey
 from sqlalchemy.sql.expression import table
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.util.langhelpers import symbol
 
-engine = db.create_engine('postgresql:///crypto')
+engine = db.create_engine(
+    'postgresql://postgres:H%40L!M@localhost:3360/crypto')
 connection = engine.connect()
 metadata = db.MetaData()
 purchases = db.Table('purchases', metadata)
