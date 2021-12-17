@@ -2,13 +2,22 @@
 
 from os import curdir
 import sqlalchemy as db
+import pymysql
 from sqlalchemy import Integer, Column, create_engine, ForeignKey
 from sqlalchemy.sql.expression import table
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.util.langhelpers import symbol
+from app import app
 
+
+# dialect+driver://username:password@host:port/database
+# dialect- name of db
+# driver- DBAPI (optional)
+# username/password - credentials
+# host- localhost
+# database name of db
 engine = db.create_engine(
-    'postgresql://postgres:H%40L!M@localhost:3360/crypto')
+    'mysql+pymysql://docker:secret@localhost:3306/crypto', echo=True)
 connection = engine.connect()
 metadata = db.MetaData()
 purchases = db.Table('purchases', metadata)

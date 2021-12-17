@@ -8,6 +8,8 @@ import sched
 import os
 import logging
 import psycopg2
+from sqlalchemy import Integer, Column, create_engine, ForeignKey
+import sqlalchemy as db
 
 from dotenv import find_dotenv, load_dotenv, dotenv_values
 
@@ -22,6 +24,15 @@ config = dotenv_values(".env")
 os.getenv("DB_HOST")
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True))
+
+engine = db.create_engine(
+    'mysql+pymysql://docker:secret@localhost:33060/crypto', echo=True)
+connection = engine.connect()
+metadata = db.MetaData()
+purchases = db.Table('purchases', metadata)
+portfolios = db.Table('portfolios', metadata)
+top_cryptos = db.Table('top_cryptos', metadata)
+
 
 # this will allow you to call a scheduler in any function you want to schedule
 # as this app runs automatically, it requires functions to be scheduled
