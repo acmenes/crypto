@@ -64,8 +64,7 @@ def auto_check(sc):
         while x < len(top3):
             top3_names.append(top3[x].get("id"))
             # While checking prices, check if we already have one of those coins in our portfolio
-            # coin_by_id = Purchases.query.get(check[x].id)
-            # print(coin_by_id)
+            coin_by_id = session.query(Purchases)
             print("Currency: %s" % top3[x].get("id"))
             print("Current Price: %s" % top3[x].get("current_price"))
             print("Average Price: %s" % average_price(f"{top3_names[x]}"))
@@ -77,7 +76,7 @@ def auto_check(sc):
                 submit_order({top3_names[x]}, 1, top3[x].get("current_price"))
             x += 1
 
-        s.enter(3, 100, auto_check, (sc,))
+        s.enter(GLOBAL_HOUR_CHECK, 100, auto_check, (sc,))
 
     except:
         print("An error occurred in the auto check function.")
@@ -152,5 +151,5 @@ print("Every hour, this app will check the price of the top 3 cryptos and execut
 initialize_portfolio()
 
 # Use GLOBAL_HOUR_CHECK to run an hourly check on prices, and GLOBAL_DAY_CHECK to run a check once per day
-s.enter(3, 100, auto_check, (s,))
+s.enter(GLOBAL_HOUR_CHECK, 100, auto_check, (s,))
 s.run()
