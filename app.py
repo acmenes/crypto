@@ -38,19 +38,6 @@ def auto_check(sc):
         check = ca.get_coins()
         top3 = [check[0], check[1], check[2]]
 
-        # if(coin_by_id):
-        #   coin_by_id.current_price = average_price(coin_id)
-        #   coin_by_id.gain_loss = ((coin_by_id.price_purchased - current_price) /
-        #   ((coin_by_id.price_purchased + current_price) / 2)) * 100
-
-        # to get percent diff:
-
-        # ((value1 - value2) / ((value1 + value2) / 2)) * 100
-        # if value 1 is larger it should be displayed positively, if value 2 is larger it should be
-        # displayed as a negative
-
-        # replace the current_price field with the result of the average price function
-
         x = 0
         top3_names = []
 
@@ -64,7 +51,23 @@ def auto_check(sc):
         while x < len(top3):
             top3_names.append(top3[x].get("id"))
             # While checking prices, check if we already have one of those coins in our portfolio
-            coin_by_id = session.query(Purchases)
+            coin_by_id = session.query(Purchases).filter(
+                Purchases.coin_id == top3[x].get("id"))
+            # here you would change the coin_by_id current price to match the current price found by this function
+            # then you use the current price data to check against the price bought to find the percent difference
+
+            # if coin_by_id:
+            #   coin_by_id.current_price = average_price(coin_id)
+            #   coin_by_id.gain_loss = ((coin_by_id.price_purchased - current_price) /
+            #   ((coin_by_id.price_purchased + current_price) / 2)) * 100
+
+            # to get percent diff:
+
+            # ((value1 - value2) / ((value1 + value2) / 2)) * 100
+            # if value 1 is larger it should be displayed positively, if value 2 is larger it should be
+            # displayed as a negative
+
+            # replace the current_price field with the result of the average price function
             print("Currency: %s" % top3[x].get("id"))
             print("Current Price: %s" % top3[x].get("current_price"))
             print("Average Price: %s" % average_price(f"{top3_names[x]}"))
@@ -76,7 +79,7 @@ def auto_check(sc):
                 submit_order({top3_names[x]}, 1, top3[x].get("current_price"))
             x += 1
 
-        s.enter(GLOBAL_HOUR_CHECK, 100, auto_check, (sc,))
+        s.enter(3, 100, auto_check, (sc,))
 
     except:
         print("An error occurred in the auto check function.")
@@ -151,5 +154,5 @@ print("Every hour, this app will check the price of the top 3 cryptos and execut
 initialize_portfolio()
 
 # Use GLOBAL_HOUR_CHECK to run an hourly check on prices, and GLOBAL_DAY_CHECK to run a check once per day
-s.enter(GLOBAL_HOUR_CHECK, 100, auto_check, (s,))
+s.enter(3, 100, auto_check, (s,))
 s.run()

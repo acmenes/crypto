@@ -77,4 +77,5 @@ CREATE TABLE purchases (
 ## Issues to solve
 
 - Unpacking error when trying to connect the database to the app using the engine.connect() function ("error: unpack requires a buffer of 4 bytes")
-- Calculating gain/loss- I created a column for gain/loss in the db. I know how I want to implement this feature (checking the current price of a coin against the price purchased and calculating the difference), but I am feeling blocked by my database issues at the moment.
+  - I would like to ask some questions during our session regarding this error. I am wondering if it either has to do something I am doing wrong with the docker, or something I am doing wrong when connecting to the MySQL db using SQLAlchemy. I hope we can explore this topic today.
+- Calculating gain/loss- I created a column for gain/loss in the db. I know how I want to implement this feature (checking the current price of a coin against the price purchased and calculating the difference), but I am feeling blocked by my database issues at the moment in order to ensure this feature really works. The code for the gain/loss function is written but commented out at the moment. 

@@ -1,0 +1,157 @@
+----> 1 engine.connect()
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/base.py in connect(self, close_with_result)
+   3160         """
+   3161 
+-> 3162         return self._connection_cls(self, close_with_result=close_with_result)
+   3163 
+   3164     @util.deprecated(
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/base.py in __init__(self, engine, connection, close_with_result, _branch_from, _execution_options, _dispatch, _has_events, _allow_revalidate)
+     90                 connection
+     91                 if connection is not None
+---> 92                 else engine.raw_connection()
+     93             )
+     94 
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/base.py in raw_connection(self, _connection)
+   3239 
+   3240         """
+-> 3241         return self._wrap_pool_connect(self.pool.connect, _connection)
+   3242 
+   3243 
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/base.py in _wrap_pool_connect(self, fn, connection)
+   3206         dialect = self.dialect
+   3207         try:
+-> 3208             return fn()
+   3209         except dialect.dbapi.Error as e:
+   3210             if connection is None:
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in connect(self)
+    299 
+    300         """
+--> 301         return _ConnectionFairy._checkout(self)
+    302 
+    303     def _return_conn(self, record):
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in _checkout(cls, pool, threadconns, fairy)
+    759     def _checkout(cls, pool, threadconns=None, fairy=None):
+    760         if not fairy:
+--> 761             fairy = _ConnectionRecord.checkout(pool)
+    762 
+    763             fairy._pool = pool
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in checkout(cls, pool)
+    417     @classmethod
+    418     def checkout(cls, pool):
+--> 419         rec = pool._do_get()
+    420         try:
+    421             dbapi_connection = rec.get_connection()
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/impl.py in _do_get(self)
+    143             except:
+    144                 with util.safe_reraise():
+--> 145                     self._dec_overflow()
+    146         else:
+    147             return self._do_get()
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/util/langhelpers.py in __exit__(self, type_, value, traceback)
+     68             self._exc_info = None  # remove potential circular references
+     69             if not self.warn_only:
+---> 70                 compat.raise_(
+     71                     exc_value,
+     72                     with_traceback=exc_tb,
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/util/compat.py in raise_(***failed resolving arguments***)
+    209 
+    210         try:
+--> 211             raise exception
+    212         finally:
+    213             # credit to
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/impl.py in _do_get(self)
+    140         if self._inc_overflow():
+    141             try:
+--> 142                 return self._create_connection()
+    143             except:
+    144                 with util.safe_reraise():
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in _create_connection(self)
+    245         """Called by subclasses to create a new ConnectionRecord."""
+    246 
+--> 247         return _ConnectionRecord(self)
+    248 
+    249     def _invalidate(self, connection, exception=None, _checkin=True):
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in __init__(self, pool, connect)
+    360         self.__pool = pool
+    361         if connect:
+--> 362             self.__connect()
+    363         self.finalize_callback = deque()
+    364 
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in __connect(self)
+    603         except Exception as e:
+    604             with util.safe_reraise():
+--> 605                 pool.logger.debug("Error on connect(): %s", e)
+    606         else:
+    607             # in SQLAlchemy 1.4 the first_connect event is not used by
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/util/langhelpers.py in __exit__(self, type_, value, traceback)
+     68             self._exc_info = None  # remove potential circular references
+     69             if not self.warn_only:
+---> 70                 compat.raise_(
+     71                     exc_value,
+     72                     with_traceback=exc_tb,
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/util/compat.py in raise_(***failed resolving arguments***)
+    209 
+    210         try:
+--> 211             raise exception
+    212         finally:
+    213             # credit to
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/pool/base.py in __connect(self)
+    597         try:
+    598             self.starttime = time.time()
+--> 599             connection = pool._invoke_creator(self)
+    600             pool.logger.debug("Created new connection %r", connection)
+    601             self.connection = connection
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/create.py in connect(connection_record)
+    576                     if connection is not None:
+    577                         return connection
+--> 578             return dialect.connect(*cargs, **cparams)
+    579 
+    580         creator = pop_kwarg("creator", connect)
+
+/usr/local/lib/python3.9/site-packages/sqlalchemy/engine/default.py in connect(self, *cargs, **cparams)
+    582     def connect(self, *cargs, **cparams):
+    583         # inherits the docstring from interfaces.Dialect.connect
+--> 584         return self.dbapi.connect(*cargs, **cparams)
+    585 
+    586     def create_connect_args(self, url):
+
+/usr/local/lib/python3.9/site-packages/pymysql/connections.py in __init__(self, user, password, host, database, unix_socket, port, charset, sql_mode, read_default_file, conv, use_unicode, client_flag, cursorclass, init_command, connect_timeout, read_default_group, autocommit, local_infile, max_allowed_packet, defer_connect, auth_plugin_map, read_timeout, write_timeout, bind_address, binary_prefix, program_name, server_public_key, ssl, ssl_ca, ssl_cert, ssl_disabled, ssl_key, ssl_verify_cert, ssl_verify_identity, compress, named_pipe, passwd, db)
+    351             self._sock = None
+    352         else:
+--> 353             self.connect()
+    354 
+    355     def __enter__(self):
+
+/usr/local/lib/python3.9/site-packages/pymysql/connections.py in connect(self, sock)
+    630             self._next_seq_id = 0
+    631 
+--> 632             self._get_server_information()
+    633             self._request_authentication()
+    634 
+
+/usr/local/lib/python3.9/site-packages/pymysql/connections.py in _get_server_information(self)
+   1063         i = server_end + 1
+   1064 
+-> 1065         self.server_thread_id = struct.unpack("<I", data[i : i + 4])
+   1066         i += 4
+   1067 
+
+error: unpack requires a buffer of 4 bytes
