@@ -1,67 +1,43 @@
 """Crypto Interview Assessment Module."""
 
-# from models import db, Purchases, Portfolios, Top_Cryptos
+from models import db, engine, session, Portfolios, Purchases, Top_Cryptos
 from datetime import datetime
+
 import crypto_api as ca
 import time
 import sched
-import os
 import logging
-import psycopg2
-from sqlalchemy import Integer, Column, create_engine, ForeignKey
-import sqlalchemy as db
 
-from dotenv import find_dotenv, load_dotenv, dotenv_values
-
-# connect_db(app)
+GLOBAL_HOUR_CHECK = 3600
+GLOBAL_DAY_CHECK = 86400
 
 # This will allow us to log the results of trades.
 logging.basicConfig(filename='storage/logs/app.log',
                     encoding='utf-8', level=logging.DEBUG)
 
-config = dotenv_values(".env")
-
-os.getenv("DB_HOST")
-
-load_dotenv(find_dotenv(raise_error_if_not_found=True))
-
-engine = db.create_engine(
-    'mysql+pymysql://docker:secret@localhost:33060/crypto', echo=True)
-connection = engine.connect()
-metadata = db.MetaData()
-purchases = db.Table('purchases', metadata)
-portfolios = db.Table('portfolios', metadata)
-top_cryptos = db.Table('top_cryptos', metadata)
-
-
 # this will allow you to call a scheduler in any function you want to schedule
 # as this app runs automatically, it requires functions to be scheduled
 s = sched.scheduler(time.time, time.sleep)
-
-# You can access the environment variables as such,
-# and any variables from the .env file will be loaded in for you to use.
-# os.getenv("DB_HOST")
 
 
 def initialize_portfolio():
     '''Starts the app with a new portfolio'''
 
-    # new_portfolio = Portfolios.create_portfolio()
-    # db.session.add(new_portfolio)
-    # db.session.commit()
-
+    new_portfolio = Portfolios.create_portfolio()
+    # session.add(new_portfolio)
+    # session.commit()
     print("New portfolio created")
 
 
-def hour_check(sc):
-    '''Automated function that checks the prices and returns data for the top 3 coins'''
+def auto_check(sc):
+    '''Automated function that checks the prices and returns data for the top 3 coins
+
+    If you change the first param in the scheduler, you can run this check as often or as infrequently as you want.'''
 
     try:
         check = ca.get_coins()
         top3 = [check[0], check[1], check[2]]
 
-        # While checking prices, check if we already have one of those coins in our portfolio
-        # coin_by_id = Purchases.query.get(coin_id)
         # if(coin_by_id):
         #   coin_by_id.current_price = average_price(coin_id)
         #   coin_by_id.gain_loss = ((coin_by_id.price_purchased - current_price) /
@@ -87,21 +63,24 @@ def hour_check(sc):
 
         while x < len(top3):
             top3_names.append(top3[x].get("id"))
+            # While checking prices, check if we already have one of those coins in our portfolio
+            # coin_by_id = Purchases.query.get(check[x].id)
+            # print(coin_by_id)
             print("Currency: %s" % top3[x].get("id"))
             print("Current Price: %s" % top3[x].get("current_price"))
             print("Average Price: %s" % average_price(f"{top3_names[x]}"))
-            # check = Top_Cryptos.create_entry(symbol=top3[x].get("id"), name=top3[x].get(
-            #     "id"), current_price=top3[x].get("current_price"), date=current_date, time=current_time)
+            check = Top_Cryptos.create_entry(symbol=top3[x].get("id"), name=top3[x].get(
+                "id"), current_price=top3[x].get("current_price"), date=current_date, time=current_time)
             # db.session.add(check)
             # db.session.commit()
             if float(average_price(f"{top3_names[x]}")) > float(top3[x].get("current_price")):
                 submit_order({top3_names[x]}, 1, top3[x].get("current_price"))
             x += 1
 
-        s.enter(3600, 100, hour_check, (sc,))
+        s.enter(3, 100, auto_check, (sc,))
 
     except:
-        print("An error occurred in the hour check function.")
+        print("An error occurred in the auto check function.")
 
 
 def average_price(coin_id: str):
@@ -151,10 +130,11 @@ def submit_order(coin_id: str, qty: int, bid: float):
         print(
             f"Submitting order of {coin_id} for {qty} coin at a price of {bid}.")
 
-        # purchase = Purchases.create_line(
-        #     coin_id=coin_id, qty=qty, price_at_purchase=bid, current_price=bid gain_loss=0.0)
+        purchase = Purchases.create_line(
+            coin_id=coin_id, qty=qty, price_at_purchase=bid, current_price=bid, gain_loss=0.0)
         # db.session.add(purchase)
         # db.session.commit()
+        print("Your purchases were successful!")
 
         logging.info(
             f"{qty} of {coin_id} fulfilled at {current_time} on {current_date} at a price of {bid}.")
@@ -171,6 +151,6 @@ print("Every hour, this app will check the price of the top 3 cryptos and execut
 
 initialize_portfolio()
 
-# if you want to change it from an hour to a day, change 3600 seconds to 86400 seconds
-s.enter(3600, 100, hour_check, (s,))
+# Use GLOBAL_HOUR_CHECK to run an hourly check on prices, and GLOBAL_DAY_CHECK to run a check once per day
+s.enter(3, 100, auto_check, (s,))
 s.run()
