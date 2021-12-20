@@ -69,13 +69,12 @@ CREATE TABLE purchases (
 ## Tech stack
 
 - Python
-- PSQL
-- SQLAlchemy (ORM for interfacing between PostgreSQL and Python)
+- MySQL
+- SQLAlchemy (ORM for interfacing between MySQL and Python)
 - CoinGecko Crypto API
 - DBDiagram.io (to design db schema)
 
 ## Issues to solve
 
-- When connecting to the provided database using the SQL Pro GUI, this error occurs: MySQL said: Protocol mismatch; server version = 11, client version = 10
-- When attempting to connect to my own PostgreSQL database instead using SQLAlchemy, this error occurs: Is the server running locally and accepting connections on Unix domain socket "/var/run/postgresql/.s.PGSQL.5432"?
+- Unpacking error when trying to connect the database to the app using the engine.connect() function ("error: unpack requires a buffer of 4 bytes")
 - Calculating gain/loss- I created a column for gain/loss in the db. I know how I want to implement this feature (checking the current price of a coin against the price purchased and calculating the difference), but I am feeling blocked by my database issues at the moment.

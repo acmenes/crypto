@@ -6,7 +6,7 @@ from sqlalchemy.sql.expression import table
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.util.langhelpers import symbol
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, Query
 import os
 
 from dotenv import find_dotenv, load_dotenv, dotenv_values
